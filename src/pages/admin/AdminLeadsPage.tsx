@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Trash2, X, Eye } from 'lucide-react';
+import { Trash2, Eye } from 'lucide-react';
 import { useT } from '@/features/i18n/store';
 import { useLeadsStore } from '@/features/leads/store';
 import { useAuthStore } from '@/features/auth/store';
 import type { Lead, LeadStatus } from '@/shared/types';
-import { PageHeader, LeadStatusBadge, ConfirmDialog, EmptyState } from '@/shared/components/ui';
+import { PageHeader, LeadStatusBadge, ConfirmDialog, EmptyState, Modal } from '@/shared/components/ui';
 import { formatDate } from '@/shared/utils';
 
 const STATUSES: LeadStatus[] = ['new', 'contacted', 'inProgress', 'closed'];
@@ -43,18 +43,20 @@ export const AdminLeadsPage = () => {
     <>
       <PageHeader eyebrow={t('admin.section.list')} title={t('admin.leads')} />
 
-      <div className="card p-4 mb-6 flex flex-wrap gap-3 items-center">
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value as LeadStatus | 'all')}
-          className="max-w-[220px]"
-        >
-          <option value="all">{t('common.all')}</option>
-          {STATUSES.map((s) => (
-            <option key={s} value={s}>{t(`leadStatus.${s}`)}</option>
-          ))}
-        </select>
-        <div className="text-xs text-ink-muted ml-auto">
+      <div className="card p-4 mb-6 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:items-end">
+        <div className="sm:max-w-[220px] sm:flex-1">
+          <label className="field-label">{t('common.status')}</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as LeadStatus | 'all')}
+          >
+            <option value="all">{t('common.all')}</option>
+            {STATUSES.map((s) => (
+              <option key={s} value={s}>{t(`leadStatus.${s}`)}</option>
+            ))}
+          </select>
+        </div>
+        <div className="text-xs text-ink-muted sm:ml-auto">
           {filtered.length} / {leads.length}
         </div>
       </div>
@@ -62,69 +64,115 @@ export const AdminLeadsPage = () => {
       {filtered.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="table-wrap">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>{t('form.name')}</th>
-                <th>{t('form.phone')}</th>
-                <th>{t('form.interest')}</th>
-                <th>{t('common.status')}</th>
-                <th>Created</th>
-                <th className="text-right">{t('common.actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((lead) => (
-                <tr key={lead.id}>
-                  <td>
-                    <div className="font-medium">{lead.name}</div>
-                    {lead.email && <div className="text-xs text-ink-subtle">{lead.email}</div>}
-                  </td>
-                  <td className="text-ink-muted whitespace-nowrap">{lead.phone}</td>
-                  <td className="text-ink-muted">{t(`interest.${lead.interestType}`)}</td>
-                  <td><LeadStatusBadge status={lead.status} /></td>
-                  <td className="text-xs text-ink-muted whitespace-nowrap">
-                    {formatDate(lead.createdAt, locale)}
-                  </td>
-                  <td>
-                    <div className="flex justify-end gap-1">
-                      <button type="button" className="btn-ghost btn-sm" onClick={() => setSelected(lead)}>
-                        <Eye size={14} />
-                      </button>
-                      <button type="button" className="btn-danger btn-sm" onClick={() => setConfirmId(lead.id)}>
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </td>
+        <>
+          <div className="table-wrap hidden md:block">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>{t('form.name')}</th>
+                  <th>{t('form.phone')}</th>
+                  <th>{t('form.interest')}</th>
+                  <th>{t('common.status')}</th>
+                  <th>Created</th>
+                  <th className="text-right">{t('common.actions')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {filtered.map((lead) => (
+                  <tr key={lead.id}>
+                    <td>
+                      <div className="font-medium">{lead.name}</div>
+                      {lead.email && <div className="text-xs text-ink-subtle break-all">{lead.email}</div>}
+                    </td>
+                    <td className="text-ink-muted whitespace-nowrap">{lead.phone}</td>
+                    <td className="text-ink-muted">{t(`interest.${lead.interestType}`)}</td>
+                    <td><LeadStatusBadge status={lead.status} /></td>
+                    <td className="text-xs text-ink-muted whitespace-nowrap">
+                      {formatDate(lead.createdAt, locale)}
+                    </td>
+                    <td>
+                      <div className="flex justify-end gap-1">
+                        <button type="button" className="btn-ghost btn-sm" onClick={() => setSelected(lead)}>
+                          <Eye size={14} />
+                        </button>
+                        <button type="button" className="btn-danger btn-sm" onClick={() => setConfirmId(lead.id)}>
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-      {currentLead && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center p-4 overflow-y-auto">
-          <div className="absolute inset-0 bg-ink/40" onClick={() => setSelected(null)} />
-          <div className="relative w-full max-w-2xl card p-6 my-8">
-            <div className="flex items-start justify-between mb-5 gap-4">
-              <div>
-                <div className="eyebrow mb-1">{t('form.interest')}: {t(`interest.${currentLead.interestType}`)}</div>
-                <h2 className="font-display text-2xl tracking-tight">{currentLead.name}</h2>
-                <div className="text-xs text-ink-muted mt-1">
-                  {formatDate(currentLead.createdAt, locale)}
+          <div className="stack-cards md:hidden">
+            {filtered.map((lead) => (
+              <div key={lead.id} className="stack-card">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="font-medium text-base break-words">{lead.name}</div>
+                    {lead.email && (
+                      <div className="text-xs text-ink-subtle break-all mt-1">{lead.email}</div>
+                    )}
+                  </div>
+                  <LeadStatusBadge status={lead.status} />
+                </div>
+                <dl className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-wider text-ink-muted">
+                      {t('form.phone')}
+                    </dt>
+                    <dd className="break-words">{lead.phone}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-wider text-ink-muted">
+                      {t('form.interest')}
+                    </dt>
+                    <dd className="break-words">{t(`interest.${lead.interestType}`)}</dd>
+                  </div>
+                </dl>
+                <div className="text-xs text-ink-muted">{formatDate(lead.createdAt, locale)}</div>
+                <div className="stack-card-actions">
+                  <button
+                    type="button"
+                    className="btn-secondary btn-sm flex-1 justify-center"
+                    onClick={() => setSelected(lead)}
+                  >
+                    <Eye size={14} /> {t('common.details')}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-danger btn-sm"
+                    onClick={() => setConfirmId(lead.id)}
+                    aria-label={t('common.delete')}
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </div>
-              <button type="button" className="p-2 -mr-2" onClick={() => setSelected(null)}>
-                <X size={18} />
-              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      <Modal
+        open={Boolean(currentLead)}
+        onClose={() => setSelected(null)}
+        size="lg"
+        title={currentLead?.name ?? ''}
+      >
+        {currentLead && (
+          <>
+            <div className="eyebrow mb-1">{t('form.interest')}: {t(`interest.${currentLead.interestType}`)}</div>
+            <div className="text-xs text-ink-muted mb-5">
+              {formatDate(currentLead.createdAt, locale)}
             </div>
 
             <div className="grid sm:grid-cols-2 gap-3 mb-5 text-sm">
               <div>
                 <div className="eyebrow mb-1">{t('form.phone')}</div>
-                <div>{currentLead.phone}</div>
+                <div className="break-words">{currentLead.phone}</div>
               </div>
               <div>
                 <div className="eyebrow mb-1">{t('form.email')}</div>
@@ -132,7 +180,7 @@ export const AdminLeadsPage = () => {
               </div>
               <div className="sm:col-span-2">
                 <div className="eyebrow mb-1">{t('form.message')}</div>
-                <div className="text-ink-muted whitespace-pre-wrap">{currentLead.message || '—'}</div>
+                <div className="text-ink-muted whitespace-pre-wrap break-words">{currentLead.message || '—'}</div>
               </div>
             </div>
 
@@ -162,25 +210,25 @@ export const AdminLeadsPage = () => {
                 <ul className="space-y-3 mb-4">
                   {currentLead.comments.map((c) => (
                     <li key={c.id} className="border border-line bg-surface-2 p-3">
-                      <div className="flex justify-between text-xs text-ink-muted mb-1">
-                        <span className="font-medium text-ink">{c.author}</span>
+                      <div className="flex flex-wrap justify-between gap-2 text-xs text-ink-muted mb-1">
+                        <span className="font-medium text-ink break-words">{c.author}</span>
                         <span>{formatDate(c.createdAt, locale)}</span>
                       </div>
-                      <div className="text-sm whitespace-pre-wrap">{c.text}</div>
+                      <div className="text-sm whitespace-pre-wrap break-words">{c.text}</div>
                     </li>
                   ))}
                 </ul>
               )}
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-col gap-2">
                 <textarea
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder={t('admin.addComment')}
-                  className="flex-1 min-h-[80px]"
+                  className="min-h-[80px]"
                 />
                 <button
                   type="button"
-                  className="btn-primary self-start"
+                  className="btn-primary self-end"
                   onClick={submitComment}
                   disabled={!commentText.trim()}
                 >
@@ -188,9 +236,9 @@ export const AdminLeadsPage = () => {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </Modal>
 
       <ConfirmDialog
         open={confirmId !== null}

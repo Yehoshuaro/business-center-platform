@@ -20,18 +20,18 @@ export const OfficeDetailPage = () => {
         <ChevronLeft size={16} /> {t('common.back')}
       </Link>
 
-      <div className="grid gap-12 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+      <div className="grid gap-10 lg:grid-cols-3 lg:gap-12">
+        <div className="lg:col-span-2 min-w-0">
           <div className="eyebrow mb-3">
             {t('common.floor')} {office.floor} · {t(`officeType.${office.type}`)}
           </div>
-          <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
-            <h1 className="font-display text-4xl md:text-5xl tracking-tight">{office.title}</h1>
+          <div className="flex items-start justify-between gap-3 mb-6 flex-wrap">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-tight break-words">{office.title}</h1>
             <OfficeStatusBadge status={office.status} />
           </div>
 
           {/* Visual — uses a demo render selected by office type */}
-          <div className="aspect-[16/9] border border-line bg-surface-2 mb-10 overflow-hidden">
+          <div className="aspect-[16/9] border border-line bg-surface-2 mb-8 sm:mb-10 overflow-hidden">
             <img
               src={
                 office.type === 'openSpace'
@@ -47,38 +47,38 @@ export const OfficeDetailPage = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 pb-10 border-b border-line">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6 mb-8 sm:mb-10 pb-8 sm:pb-10 border-b border-line">
             <div>
               <div className="eyebrow mb-2">{t('common.area')}</div>
-              <div className="font-display text-2xl">{formatNumber(office.area)} м²</div>
+              <div className="font-display text-xl sm:text-2xl">{formatNumber(office.area)} м²</div>
             </div>
             <div>
               <div className="eyebrow mb-2">{t('common.floor')}</div>
-              <div className="font-display text-2xl">{office.floor}</div>
+              <div className="font-display text-xl sm:text-2xl">{office.floor}</div>
             </div>
             <div>
               <div className="eyebrow mb-2">{t('common.type')}</div>
-              <div className="font-display text-2xl">{t(`officeType.${office.type}`)}</div>
+              <div className="font-display text-xl sm:text-2xl break-words">{t(`officeType.${office.type}`)}</div>
             </div>
             <div>
               <div className="eyebrow mb-2">{t('common.price')}</div>
-              <div className="font-display text-2xl">
+              <div className="font-display text-xl sm:text-2xl break-words">
                 {office.price !== null ? formatPrice(office.price, locale) : t('common.priceOnRequest')}
               </div>
             </div>
           </div>
 
-          <h2 className="font-display text-2xl mb-3">{t('common.description')}</h2>
-          <p className="text-ink-muted leading-relaxed mb-10">{office.description}</p>
+          <h2 className="font-display text-xl sm:text-2xl mb-3">{t('common.description')}</h2>
+          <p className="text-ink-muted leading-relaxed mb-8 sm:mb-10">{office.description}</p>
 
           {office.features.length > 0 && (
             <>
-              <h2 className="font-display text-2xl mb-4">{t('common.features')}</h2>
-              <ul className="grid gap-2 md:grid-cols-2 mb-10">
+              <h2 className="font-display text-xl sm:text-2xl mb-4">{t('common.features')}</h2>
+              <ul className="grid gap-2 sm:grid-cols-2 mb-8 sm:mb-10">
                 {office.features.map((f) => (
                   <li
                     key={f}
-                    className="flex items-start gap-3 text-sm border-l-2 border-accent pl-3 py-1"
+                    className="flex items-start gap-3 text-sm border-l-2 border-accent pl-3 py-1 break-words"
                   >
                     {f}
                   </li>
@@ -88,7 +88,7 @@ export const OfficeDetailPage = () => {
           )}
         </div>
 
-        <div className="lg:sticky lg:top-24 lg:self-start">
+        <div className="lg:sticky lg:top-24 lg:self-start min-w-0">
           <div className="eyebrow mb-3">{t('common.requestCallback')}</div>
           <LeadForm defaultInterest="office" relatedItemId={office.id} />
         </div>

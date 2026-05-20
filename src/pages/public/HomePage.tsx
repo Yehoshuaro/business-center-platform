@@ -53,25 +53,25 @@ export const HomePage = () => {
       <section className="relative border-b border-line overflow-hidden">
         <div className="absolute inset-0 grid-bg opacity-50 pointer-events-none" />
         <div className="absolute inset-0 hero-glow pointer-events-none" />
-        <div className="container-page relative py-20 md:py-28 lg:py-36">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+        <div className="container-page relative py-12 sm:py-16 md:py-24 lg:py-32">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end">
             <div className="lg:col-span-7 max-w-3xl">
-              <div className="eyebrow mb-5">
-                <span className="inline-block w-8 h-px bg-accent mr-3 align-middle" />
-                {settings.businessCenterName}
+              <div className="eyebrow mb-4 sm:mb-5 flex items-center">
+                <span className="inline-block w-6 sm:w-8 h-px bg-accent mr-3" />
+                <span className="truncate">{settings.businessCenterName}</span>
               </div>
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-tight text-balance">
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.05] tracking-tight text-balance">
                 {heroTitle}
               </h1>
-              <p className="mt-6 max-w-xl text-base md:text-lg text-ink-muted leading-relaxed">
+              <p className="mt-5 sm:mt-6 max-w-xl text-sm sm:text-base md:text-lg text-ink-muted leading-relaxed">
                 {heroSubtitle}
               </p>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <Link to="/contacts" className="btn-primary">
+              <div className="mt-7 sm:mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-3">
+                <Link to="/contacts" className="btn-primary w-full sm:w-auto">
                   {t('common.requestCallback')}
                   <ArrowUpRight size={16} />
                 </Link>
-                <Link to="/offices" className="btn-secondary">
+                <Link to="/offices" className="btn-secondary w-full sm:w-auto">
                   {t('common.viewOffices')}
                 </Link>
               </div>
@@ -102,7 +102,7 @@ export const HomePage = () => {
           </div>
 
           {/* Stats row */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6 pt-8 border-t border-line">
+          <div className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-x-6 sm:gap-x-8 gap-y-6 pt-7 sm:pt-8 border-t border-line">
             {[
               { label: 'about.stat.floors', value: '9' },
               { label: 'about.stat.area', value: '18 400' },
@@ -110,8 +110,8 @@ export const HomePage = () => {
               { label: 'about.stat.parking', value: '220' },
             ].map((s) => (
               <div key={s.label}>
-                <div className="font-display text-2xl md:text-3xl tracking-tight">{s.value}</div>
-                <div className="text-[11px] uppercase tracking-wider text-ink-muted mt-1">{t(s.label)}</div>
+                <div className="font-display text-xl sm:text-2xl md:text-3xl tracking-tight">{s.value}</div>
+                <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-ink-muted mt-1">{t(s.label)}</div>
               </div>
             ))}
           </div>
@@ -119,16 +119,16 @@ export const HomePage = () => {
       </section>
 
       {/* ===== BENEFITS ===== */}
-      <section className="container-page py-20">
-        <div className="max-w-2xl mb-12">
+      <section className="container-page py-12 sm:py-16 md:py-20">
+        <div className="max-w-2xl mb-8 sm:mb-12">
           <div className="eyebrow mb-3">02</div>
           <h2 className="section-title">{t('benefits.title')}</h2>
         </div>
-        <div className="grid gap-px bg-line border border-line md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
           {benefits.map(({ icon: Icon, key }) => (
-            <div key={key} className="bg-surface p-7 lg:p-8">
+            <div key={key} className="bg-surface p-5 sm:p-6 lg:p-8">
               <Icon size={20} strokeWidth={1.5} className="text-accent" />
-              <h3 className="mt-5 font-medium text-lg tracking-tight">{t(`benefits.${key}.title`)}</h3>
+              <h3 className="mt-4 sm:mt-5 font-medium text-base sm:text-lg tracking-tight">{t(`benefits.${key}.title`)}</h3>
               <p className="mt-2 text-sm text-ink-muted leading-relaxed">{t(`benefits.${key}.desc`)}</p>
             </div>
           ))}
@@ -137,8 +137,8 @@ export const HomePage = () => {
 
       {/* ===== GALLERY ===== */}
       {slides.length > 0 && (
-        <section className="container-page py-20 border-t border-line">
-          <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+        <section className="container-page py-12 sm:py-16 md:py-20 border-t border-line">
+          <div className="flex items-end justify-between mb-8 sm:mb-10 flex-wrap gap-4">
             <div>
               <div className="eyebrow mb-3">03</div>
               <h2 className="section-title">{t('gallery.title')}</h2>
@@ -152,15 +152,15 @@ export const HomePage = () => {
       )}
 
       {/* ===== ABOUT ===== */}
-      <section className="container-page py-20 border-t border-line">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-start">
+      <section className="container-page py-12 sm:py-16 md:py-20 border-t border-line">
+        <div className="grid gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-20 items-start">
           <div>
             <div className="eyebrow mb-3">{t('about.eyebrow')}</div>
             <h2 className="section-title">{t('about.title')}</h2>
           </div>
           <div>
-            <p className="text-base md:text-lg text-ink-muted leading-relaxed">{aboutText}</p>
-            <div className="mt-8 grid grid-cols-2 gap-6">
+            <p className="text-sm sm:text-base md:text-lg text-ink-muted leading-relaxed">{aboutText}</p>
+            <div className="mt-7 sm:mt-8 grid grid-cols-2 gap-5 sm:gap-6">
               {[
                 { label: t('about.stat.floors'), value: '9' },
                 { label: t('about.stat.area'), value: '18 400' },
@@ -168,8 +168,8 @@ export const HomePage = () => {
                 { label: t('about.stat.parking'), value: '220' },
               ].map((s) => (
                 <div key={s.label} className="border-t border-line pt-4">
-                  <div className="font-display text-2xl tracking-tight">{s.value}</div>
-                  <div className="text-xs uppercase tracking-wider text-ink-muted mt-1">{s.label}</div>
+                  <div className="font-display text-xl sm:text-2xl tracking-tight">{s.value}</div>
+                  <div className="text-[11px] uppercase tracking-wider text-ink-muted mt-1">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -178,8 +178,8 @@ export const HomePage = () => {
       </section>
 
       {/* ===== OFFICES ===== */}
-      <section className="container-page py-20 border-t border-line">
-        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+      <section className="container-page py-12 sm:py-16 md:py-20 border-t border-line">
+        <div className="flex items-end justify-between mb-8 sm:mb-10 flex-wrap gap-4">
           <div>
             <div className="eyebrow mb-3">{t('nav.offices')}</div>
             <h2 className="section-title">{t('offices.title')}</h2>
@@ -188,12 +188,12 @@ export const HomePage = () => {
             {t('common.details')} <ArrowUpRight size={14} />
           </Link>
         </div>
-        <div className="grid gap-px bg-line border border-line md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-4">
           {offices.map((office) => (
             <Link
               to={`/offices/${office.id}`}
               key={office.id}
-              className="bg-surface p-6 hover:bg-surface-2 transition-colors group"
+              className="bg-surface p-5 sm:p-6 hover:bg-surface-2 transition-colors group"
             >
               <div className="flex items-start justify-between gap-2 mb-4">
                 <span className="text-xs uppercase tracking-wider text-ink-muted">
@@ -201,16 +201,16 @@ export const HomePage = () => {
                 </span>
                 <OfficeStatusBadge status={office.status} />
               </div>
-              <div className="font-display text-2xl tracking-tight mb-2">{office.title}</div>
+              <div className="font-display text-xl sm:text-2xl tracking-tight mb-2 break-words">{office.title}</div>
               <div className="text-sm text-ink-muted mb-4">
                 {formatNumber(office.area)} м² · {t(`officeType.${office.type}`)}
               </div>
               <div className="hairline mb-4" />
-              <div className="flex items-end justify-between">
-                <span className="text-sm font-medium">
+              <div className="flex items-end justify-between gap-2">
+                <span className="text-sm font-medium break-words">
                   {office.price !== null ? formatPrice(office.price, locale) : t('common.priceOnRequest')}
                 </span>
-                <ArrowUpRight size={16} className="text-ink-muted group-hover:text-accent transition-colors" />
+                <ArrowUpRight size={16} className="text-ink-muted group-hover:text-accent transition-colors shrink-0" />
               </div>
             </Link>
           ))}
@@ -218,8 +218,8 @@ export const HomePage = () => {
       </section>
 
       {/* ===== ROOMS ===== */}
-      <section className="container-page py-20 border-t border-line">
-        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+      <section className="container-page py-12 sm:py-16 md:py-20 border-t border-line">
+        <div className="flex items-end justify-between mb-8 sm:mb-10 flex-wrap gap-4">
           <div>
             <div className="eyebrow mb-3">{t('nav.conferenceRooms')}</div>
             <h2 className="section-title">{t('rooms.title')}</h2>
@@ -228,28 +228,28 @@ export const HomePage = () => {
             {t('common.details')} <ArrowUpRight size={14} />
           </Link>
         </div>
-        <div className="grid gap-px bg-line border border-line md:grid-cols-3">
+        <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
           {rooms.map((room) => (
             <Link
               to={`/conference-rooms/${room.id}`}
               key={room.id}
-              className="bg-surface p-7 hover:bg-surface-2 transition-colors group"
+              className="bg-surface p-5 sm:p-6 lg:p-7 hover:bg-surface-2 transition-colors group"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="font-display text-2xl tracking-tight">{room.name}</div>
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div className="font-display text-xl sm:text-2xl tracking-tight break-words">{room.name}</div>
                 <OfficeStatusBadge status={room.status} />
               </div>
               <div className="text-sm text-ink-muted mb-4">
                 {room.capacity} {t('common.capacity').toLowerCase()} · {room.area} м²
               </div>
               <div className="hairline mb-4" />
-              <div className="flex items-end justify-between">
-                <span className="text-sm font-medium">
+              <div className="flex items-end justify-between gap-2">
+                <span className="text-sm font-medium break-words">
                   {room.hourlyPrice !== null
                     ? `${formatPrice(room.hourlyPrice, locale)} / ${t('rooms.hourly').toLowerCase()}`
                     : t('common.priceOnRequest')}
                 </span>
-                <ArrowUpRight size={16} className="text-ink-muted group-hover:text-accent transition-colors" />
+                <ArrowUpRight size={16} className="text-ink-muted group-hover:text-accent transition-colors shrink-0" />
               </div>
             </Link>
           ))}
@@ -257,8 +257,8 @@ export const HomePage = () => {
       </section>
 
       {/* ===== TENANTS ===== */}
-      <section className="container-page py-20 border-t border-line">
-        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+      <section className="container-page py-12 sm:py-16 md:py-20 border-t border-line">
+        <div className="flex items-end justify-between mb-8 sm:mb-10 flex-wrap gap-4">
           <div>
             <div className="eyebrow mb-3">{t('nav.tenants')}</div>
             <h2 className="section-title">{t('tenants.title')}</h2>
@@ -267,13 +267,13 @@ export const HomePage = () => {
             {t('common.details')} <ArrowUpRight size={14} />
           </Link>
         </div>
-        <div className="grid gap-px bg-line border border-line md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
           {tenants.map((tenant) => (
-            <div key={tenant.id} className="bg-surface p-6">
+            <div key={tenant.id} className="bg-surface p-5 sm:p-6">
               <div className="text-xs uppercase tracking-wider text-ink-muted mb-3">
                 {tenant.category}
               </div>
-              <div className="font-display text-xl tracking-tight">{tenant.companyName}</div>
+              <div className="font-display text-lg sm:text-xl tracking-tight break-words">{tenant.companyName}</div>
               <div className="mt-3 text-sm text-ink-muted">
                 {t('common.floor')} {tenant.floor} · {tenant.officeNumber}
               </div>
@@ -284,8 +284,8 @@ export const HomePage = () => {
 
       {/* ===== NEWS TEASER ===== */}
       {news.length > 0 && (
-        <section className="container-page py-20 border-t border-line">
-          <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+        <section className="container-page py-12 sm:py-16 md:py-20 border-t border-line">
+          <div className="flex items-end justify-between mb-8 sm:mb-10 flex-wrap gap-4">
             <div>
               <div className="eyebrow mb-3">{t('nav.news')}</div>
               <h2 className="section-title">{t('news.title')}</h2>
@@ -294,7 +294,7 @@ export const HomePage = () => {
               {t('news.all')} <ArrowUpRight size={14} />
             </Link>
           </div>
-          <div className="grid gap-px bg-line border border-line md:grid-cols-3">
+          <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
             {news.map((n) => (
               <Link
                 key={n.id}
@@ -308,13 +308,13 @@ export const HomePage = () => {
                     className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   />
                 </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex items-center gap-3 mb-3 text-[11px] uppercase tracking-[0.18em] text-ink-muted">
+                <div className="p-5 sm:p-6 flex-1 flex flex-col">
+                  <div className="flex items-center gap-3 mb-3 text-[11px] uppercase tracking-[0.18em] text-ink-muted flex-wrap">
                     <span>{n.tag}</span>
                     <span className="w-1 h-1 rounded-full bg-line-strong" />
                     <span>{formatDate(n.publishedAt, locale)}</span>
                   </div>
-                  <div className="font-display text-2xl tracking-tight leading-snug mb-3 text-balance">
+                  <div className="font-display text-xl sm:text-2xl tracking-tight leading-snug mb-3 text-balance">
                     {n.title[language] || n.title.ru}
                   </div>
                   <p className="text-sm text-ink-muted leading-relaxed flex-1">
@@ -331,28 +331,28 @@ export const HomePage = () => {
       )}
 
       {/* ===== CTA / Contacts ===== */}
-      <section className="container-page py-20 border-t border-line">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+      <section className="container-page py-12 sm:py-16 md:py-20 border-t border-line">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
           <div>
             <div className="eyebrow mb-3">{t('nav.contacts')}</div>
             <h2 className="section-title mb-4">{t('cta.title')}</h2>
             <p className="text-ink-muted leading-relaxed mb-8 max-w-md">{t('cta.text')}</p>
-            <dl className="space-y-4 text-sm">
-              <div className="flex border-b border-line pb-3">
-                <dt className="w-32 text-ink-muted">{t('contacts.address')}</dt>
-                <dd className="flex-1">{settings.address}</dd>
+            <dl className="space-y-3 sm:space-y-4 text-sm">
+              <div className="flex flex-col sm:flex-row gap-1 sm:gap-3 border-b border-line pb-3">
+                <dt className="sm:w-32 shrink-0 text-ink-muted">{t('contacts.address')}</dt>
+                <dd className="flex-1 break-words">{settings.address}</dd>
               </div>
-              <div className="flex border-b border-line pb-3">
-                <dt className="w-32 text-ink-muted">{t('contacts.phone')}</dt>
-                <dd className="flex-1">{settings.phone}</dd>
+              <div className="flex flex-col sm:flex-row gap-1 sm:gap-3 border-b border-line pb-3">
+                <dt className="sm:w-32 shrink-0 text-ink-muted">{t('contacts.phone')}</dt>
+                <dd className="flex-1 break-words">{settings.phone}</dd>
               </div>
-              <div className="flex border-b border-line pb-3">
-                <dt className="w-32 text-ink-muted">{t('contacts.email')}</dt>
-                <dd className="flex-1">{settings.email}</dd>
+              <div className="flex flex-col sm:flex-row gap-1 sm:gap-3 border-b border-line pb-3">
+                <dt className="sm:w-32 shrink-0 text-ink-muted">{t('contacts.email')}</dt>
+                <dd className="flex-1 break-all">{settings.email}</dd>
               </div>
-              <div className="flex">
-                <dt className="w-32 text-ink-muted">{t('contacts.hours')}</dt>
-                <dd className="flex-1">{settings.workingHours}</dd>
+              <div className="flex flex-col sm:flex-row gap-1 sm:gap-3">
+                <dt className="sm:w-32 shrink-0 text-ink-muted">{t('contacts.hours')}</dt>
+                <dd className="flex-1 break-words">{settings.workingHours}</dd>
               </div>
             </dl>
           </div>

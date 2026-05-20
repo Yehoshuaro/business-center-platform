@@ -21,7 +21,7 @@ export const NewsPage = () => {
       {items.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="grid gap-px bg-line border border-line md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
           {items.map((n) => (
             <Link
               key={n.id}
@@ -35,13 +35,13 @@ export const NewsPage = () => {
                   className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
                 />
               </div>
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex items-center gap-3 mb-3 text-[11px] uppercase tracking-[0.18em] text-ink-muted">
+              <div className="p-5 sm:p-6 flex-1 flex flex-col">
+                <div className="flex items-center gap-3 mb-3 text-[11px] uppercase tracking-[0.18em] text-ink-muted flex-wrap">
                   <span>{n.tag}</span>
                   <span className="w-1 h-1 rounded-full bg-line-strong" />
                   <span>{formatDate(n.publishedAt, locale)}</span>
                 </div>
-                <div className="font-display text-2xl tracking-tight leading-snug mb-3 text-balance">
+                <div className="font-display text-xl sm:text-2xl tracking-tight leading-snug mb-3 text-balance">
                   {n.title[language] || n.title.ru}
                 </div>
                 <p className="text-sm text-ink-muted leading-relaxed flex-1">

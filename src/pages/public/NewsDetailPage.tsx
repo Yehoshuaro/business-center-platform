@@ -31,15 +31,15 @@ export const NewsDetailPage = () => {
           <span>{formatDate(article.publishedAt, locale)}</span>
         </div>
 
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.05] text-balance">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-balance break-words">
           {article.title[language] || article.title.ru}
         </h1>
 
-        <p className="mt-6 text-lg text-ink-muted leading-relaxed max-w-2xl">
+        <p className="mt-5 sm:mt-6 text-base sm:text-lg text-ink-muted leading-relaxed max-w-2xl">
           {article.excerpt[language] || article.excerpt.ru}
         </p>
 
-        <div className="mt-10 aspect-[16/9] border border-line overflow-hidden bg-surface-2">
+        <div className="mt-8 sm:mt-10 aspect-[16/9] border border-line overflow-hidden bg-surface-2">
           <img
             src={article.cover}
             alt={article.title[language] || article.title.ru}
@@ -47,7 +47,7 @@ export const NewsDetailPage = () => {
           />
         </div>
 
-        <div className="mt-10 prose-bc">
+        <div className="mt-8 sm:mt-10 prose-bc">
           {(article.body[language] || article.body.ru)
             .split(/\n\s*\n/)
             .map((p, i) => (
@@ -59,9 +59,9 @@ export const NewsDetailPage = () => {
       </article>
 
       {others.length > 0 && (
-        <section className="mt-20 border-t border-line pt-12">
+        <section className="mt-14 sm:mt-20 border-t border-line pt-10 sm:pt-12">
           <div className="eyebrow mb-6">{t('news.more')}</div>
-          <div className="grid gap-px bg-line border border-line md:grid-cols-3">
+          <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
             {others.map((n) => (
               <Link
                 key={n.id}

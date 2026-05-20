@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { cn } from '@/shared/utils';
 import type { OfficeStatus, LeadStatus, AdminUserStatus, ConferenceStatus } from '@/shared/types';
 import { useT } from '@/features/i18n/store';
+
+export { Modal } from './Modal';
 
 interface PageHeaderProps {
   eyebrow?: string;
@@ -10,10 +13,10 @@ interface PageHeaderProps {
 }
 
 export const PageHeader = ({ eyebrow, title, subtitle, actions }: PageHeaderProps) => (
-  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-    <div>
+  <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6 sm:mb-8">
+    <div className="min-w-0">
       {eyebrow && <div className="eyebrow mb-2">{eyebrow}</div>}
-      <h1 className="font-display text-3xl md:text-4xl tracking-tight text-balance">{title}</h1>
+      <h1 className="font-display text-2xl sm:text-3xl md:text-4xl tracking-tight text-balance break-words">{title}</h1>
       {subtitle && (
         <p className="mt-2 max-w-2xl text-ink-muted text-sm md:text-base leading-relaxed">{subtitle}</p>
       )}
@@ -115,14 +118,27 @@ export const ConfirmDialog = ({
   onCancel,
 }: ConfirmDialogProps) => {
   const { t } = useT();
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onCancel();
+    document.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open, onCancel]);
+
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-ink/40" onClick={onCancel} />
-      <div className="relative w-full max-w-md card p-6">
-        <h3 className="font-display text-xl mb-2">{title ?? t('admin.confirmDelete')}</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/40" role="dialog" aria-modal="true">
+      <div className="absolute inset-0" onClick={onCancel} aria-hidden="true" />
+      <div className="relative w-full max-w-md card p-5 sm:p-6">
+        <h3 className="font-display text-lg sm:text-xl mb-2">{title ?? t('admin.confirmDelete')}</h3>
         {description && <p className="text-sm text-ink-muted mb-5">{description}</p>}
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
           <button type="button" className="btn-secondary" onClick={onCancel}>
             {cancelLabel ?? t('common.cancel')}
           </button>

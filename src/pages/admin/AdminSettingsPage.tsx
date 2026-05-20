@@ -42,14 +42,14 @@ export const AdminSettingsPage = () => {
     <>
       <PageHeader eyebrow={t('admin.settings')} title={t('admin.settings')} />
 
-      <form onSubmit={onSave} className="space-y-8 max-w-4xl">
+      <form onSubmit={onSave} className="space-y-6 sm:space-y-8 max-w-4xl">
         {/* GENERAL */}
-        <section className="card p-6">
-          <h2 className="font-display text-xl tracking-tight mb-1">{t('settings.general')}</h2>
+        <section className="card p-5 sm:p-6">
+          <h2 className="font-display text-lg sm:text-xl tracking-tight mb-1">{t('settings.general')}</h2>
           <p className="text-xs text-ink-muted mb-5">{t('contacts.info')}</p>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
               <label className="field-label">{t('settings.businessName')}</label>
               <input
                 type="text"
@@ -58,7 +58,7 @@ export const AdminSettingsPage = () => {
                 onChange={(e) => setForm({ ...form, businessCenterName: e.target.value })}
               />
             </div>
-            <div className="md:col-span-2">
+            <div className="sm:col-span-2">
               <label className="field-label">{t('contacts.address')}</label>
               <input
                 type="text"
@@ -82,7 +82,7 @@ export const AdminSettingsPage = () => {
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </div>
-            <div className="md:col-span-2">
+            <div className="sm:col-span-2">
               <label className="field-label">{t('contacts.hours')}</label>
               <input
                 type="text"
@@ -94,10 +94,10 @@ export const AdminSettingsPage = () => {
         </section>
 
         {/* APPEARANCE */}
-        <section className="card p-6">
-          <h2 className="font-display text-xl tracking-tight mb-5">{t('settings.appearance')}</h2>
+        <section className="card p-5 sm:p-6">
+          <h2 className="font-display text-lg sm:text-xl tracking-tight mb-5">{t('settings.appearance')}</h2>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
             <div>
               <label className="field-label">{t('common.theme')}</label>
               <div className="grid grid-cols-2 gap-2 mt-1">
@@ -113,8 +113,8 @@ export const AdminSettingsPage = () => {
                         : 'border-line-strong text-ink-muted hover:bg-surface-2',
                     )}
                   >
-                    {t(th.labelKey)}
-                    {form.theme === th.value && <Check size={14} />}
+                    <span className="truncate">{t(th.labelKey)}</span>
+                    {form.theme === th.value && <Check size={14} className="shrink-0" />}
                   </button>
                 ))}
               </div>
@@ -128,14 +128,14 @@ export const AdminSettingsPage = () => {
                     key={lng.code}
                     onClick={() => setForm({ ...form, language: lng.code })}
                     className={cn(
-                      'flex items-center justify-between px-3 py-2 text-sm border transition-colors',
+                      'flex items-center justify-between gap-2 px-3 py-2 text-sm border transition-colors',
                       form.language === lng.code
                         ? 'border-accent bg-surface-2 text-ink'
                         : 'border-line-strong text-ink-muted hover:bg-surface-2',
                     )}
                   >
-                    {lng.label}
-                    {form.language === lng.code && <Check size={14} />}
+                    <span className="truncate">{lng.label}</span>
+                    {form.language === lng.code && <Check size={14} className="shrink-0" />}
                   </button>
                 ))}
               </div>
@@ -144,20 +144,20 @@ export const AdminSettingsPage = () => {
         </section>
 
         {/* CONTENT (multilingual) */}
-        <section className="card p-6">
+        <section className="card p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
             <div>
-              <h2 className="font-display text-xl tracking-tight">{t('settings.content')}</h2>
-              <p className="text-xs text-ink-muted mt-1">Hero & About — per language</p>
+              <h2 className="font-display text-lg sm:text-xl tracking-tight">{t('settings.content')}</h2>
+              <p className="text-xs text-ink-muted mt-1">Hero &amp; About — per language</p>
             </div>
-            <div className="inline-flex border border-line-strong bg-surface">
+            <div className="inline-flex border border-line-strong bg-surface self-start">
               {LANGUAGES.map((lng) => (
                 <button
                   key={lng.code}
                   type="button"
                   onClick={() => setContentLang(lng.code)}
                   className={cn(
-                    'px-3 py-1.5 text-xs uppercase tracking-wider',
+                    'px-3 py-2 text-xs uppercase tracking-wider min-w-[44px]',
                     contentLang === lng.code
                       ? 'bg-accent text-accent-ink'
                       : 'text-ink-muted hover:bg-surface-2',
@@ -196,8 +196,8 @@ export const AdminSettingsPage = () => {
           </div>
         </section>
 
-        <div className="flex items-center gap-4">
-          <button type="submit" className="btn-primary">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <button type="submit" className="btn-primary w-full sm:w-auto justify-center">
             {t('common.save')}
           </button>
           {saved && (

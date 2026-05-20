@@ -90,14 +90,46 @@ body,
   height: 100%;
 }
 
+html {
+  /* Prevent iOS text inflation on rotate */
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   @apply bg-surface text-ink font-sans antialiased;
   font-feature-settings: 'ss01', 'cv11';
+  /* Hard guard against accidental horizontal scroll on mobile */
+  overflow-x: hidden;
+}
+
+/* Ensure form controls don't trigger iOS auto-zoom (font ≥ 16px on small) */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
 }
 
 ::selection {
   background-color: rgb(var(--accent));
   color: rgb(var(--accent-ink));
+}
+
+/* Base form control styling — applied to every native form control so that
+   admin pages using bare <input>/<select>/<textarea> still look correct.
+   Pages that need a different look can override per-element. */
+@layer base {
+  input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='range']):not([type='submit']):not([type='button']),
+  select,
+  textarea {
+    @apply w-full bg-surface text-ink border border-line-strong px-3 py-2 text-sm
+           placeholder:text-ink-subtle
+           focus:outline-none focus:border-accent transition-colors;
+  }
+  textarea {
+    @apply min-h-[110px] resize-y;
+  }
 }
 
 /* Scrollbar — subtle, themed */
@@ -122,7 +154,7 @@ body {
    ========================================================= */
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-content px-5 md:px-8;
+    @apply mx-auto w-full max-w-content px-4 sm:px-6 md:px-8;
   }
 
   .btn {
@@ -194,7 +226,7 @@ body {
   }
 
   .section-title {
-    @apply font-display text-3xl md:text-5xl text-ink leading-[1.05] tracking-tight;
+    @apply font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-ink leading-[1.1] tracking-tight;
   }
 
   .link-underline {
@@ -204,6 +236,7 @@ body {
   /* Table */
   .table-wrap {
     @apply w-full overflow-x-auto border border-line bg-surface;
+    -webkit-overflow-scrolling: touch;
   }
   .data-table {
     @apply w-full text-sm;
@@ -220,6 +253,46 @@ body {
   }
   .data-table tbody tr:hover td {
     @apply bg-surface-2;
+  }
+
+  /* Mobile card-list (used to replace tables under sm/md) */
+  .stack-cards {
+    @apply grid gap-3;
+  }
+  .stack-card {
+    @apply bg-surface border border-line p-4 flex flex-col gap-3;
+  }
+  .stack-card-row {
+    @apply flex items-start justify-between gap-3 text-sm;
+  }
+  .stack-card-row dt {
+    @apply text-[11px] uppercase tracking-wider text-ink-muted;
+  }
+  .stack-card-row dd {
+    @apply text-ink text-sm text-right break-words min-w-0;
+  }
+  .stack-card-actions {
+    @apply flex flex-wrap gap-2 pt-3 border-t border-line;
+  }
+
+  /* Modal shell — consistent across admin */
+  .modal-overlay {
+    @apply fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4
+           overflow-y-auto bg-ink/40;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-card {
+    @apply relative w-full bg-surface border border-line shadow-card my-4 sm:my-8 flex flex-col
+           max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-4rem)];
+  }
+  .modal-head {
+    @apply flex items-center justify-between gap-3 px-5 py-4 border-b border-line shrink-0;
+  }
+  .modal-body {
+    @apply px-5 py-5 overflow-y-auto;
+  }
+  .modal-foot {
+    @apply flex flex-col-reverse sm:flex-row sm:justify-end gap-2 px-5 py-4 border-t border-line shrink-0 bg-surface;
   }
 }
 

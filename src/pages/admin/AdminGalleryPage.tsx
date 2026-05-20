@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, X, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Trash2, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
 import { useT } from '@/features/i18n/store';
 import { useGalleryStore } from '@/features/gallery/store';
 import type { GalleryImage, LocalizedText } from '@/shared/types';
-import { PageHeader, ConfirmDialog, EmptyState } from '@/shared/components/ui';
+import { PageHeader, ConfirmDialog, EmptyState, Modal } from '@/shared/components/ui';
 import { cn } from '@/shared/utils';
 
 const DEMO_IMAGES = [
@@ -164,112 +164,104 @@ export const AdminGalleryPage = () => {
         </div>
       )}
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center p-4 overflow-y-auto">
-          <div className="absolute inset-0 bg-ink/40" onClick={closeForm} />
-          <form onSubmit={submit} className="relative w-full max-w-2xl card p-6 my-8">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="font-display text-2xl tracking-tight">
-                {editing ? t('admin.section.editing') : t('admin.section.create')}
-              </h2>
-              <button type="button" className="p-2 -mr-2" onClick={closeForm}>
-                <X size={18} />
-              </button>
+      <Modal
+        open={isOpen}
+        onClose={closeForm}
+        size="lg"
+        title={editing ? t('admin.section.editing') : t('admin.section.create')}
+        footer={
+          <>
+            <button type="button" className="btn-secondary" onClick={closeForm}>
+              {t('common.cancel')}
+            </button>
+            <button type="submit" form="gallery-form" className="btn-primary">
+              {t('common.save')}
+            </button>
+          </>
+        }
+      >
+        <form id="gallery-form" onSubmit={submit} className="grid gap-4">
+          <div>
+            <label className="field-label">{t('admin.gallery.image')}</label>
+            <div className="grid grid-cols-3 gap-2 mb-3">
+              {DEMO_IMAGES.map((src) => (
+                <button
+                  type="button"
+                  key={src}
+                  onClick={() => setForm({ ...form, src })}
+                  className={cn(
+                    'aspect-[16/10] overflow-hidden border-2 transition-colors',
+                    form.src === src ? 'border-accent' : 'border-line hover:border-line-strong',
+                  )}
+                >
+                  <img src={src} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
             </div>
+            <input
+              type="text"
+              value={form.src}
+              onChange={(e) => setForm({ ...form, src: e.target.value })}
+              placeholder="https://… or ./demo/*.svg"
+            />
+          </div>
 
-            <div className="grid gap-4">
-              <div>
-                <label className="field-label">{t('admin.gallery.image')}</label>
-                <div className="grid grid-cols-3 gap-2 mb-3">
-                  {DEMO_IMAGES.map((src) => (
-                    <button
-                      type="button"
-                      key={src}
-                      onClick={() => setForm({ ...form, src })}
-                      className={cn(
-                        'aspect-[16/10] overflow-hidden border-2 transition-colors',
-                        form.src === src ? 'border-accent' : 'border-line hover:border-line-strong',
-                      )}
-                    >
-                      <img src={src} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
+          <fieldset className="grid sm:grid-cols-3 gap-3">
+            <legend className="field-label">{t('admin.gallery.title')}</legend>
+            {(['kk', 'ru', 'en'] as const).map((lc) => (
+              <div key={lc}>
+                <div className="text-[10px] uppercase tracking-wider text-ink-subtle mb-1">{lc}</div>
                 <input
                   type="text"
-                  value={form.src}
-                  onChange={(e) => setForm({ ...form, src: e.target.value })}
-                  placeholder="https://… or ./demo/*.svg"
+                  value={form.title[lc]}
+                  onChange={(e) =>
+                    setForm({ ...form, title: { ...form.title, [lc]: e.target.value } })
+                  }
+                  required={lc === 'ru'}
                 />
               </div>
+            ))}
+          </fieldset>
 
-              <fieldset className="grid md:grid-cols-3 gap-3">
-                <legend className="field-label">{t('admin.gallery.title')}</legend>
-                {(['kk', 'ru', 'en'] as const).map((lc) => (
-                  <div key={lc}>
-                    <div className="text-[10px] uppercase tracking-wider text-ink-subtle mb-1">{lc}</div>
-                    <input
-                      type="text"
-                      value={form.title[lc]}
-                      onChange={(e) =>
-                        setForm({ ...form, title: { ...form.title, [lc]: e.target.value } })
-                      }
-                      required={lc === 'ru'}
-                    />
-                  </div>
-                ))}
-              </fieldset>
-
-              <fieldset className="grid md:grid-cols-3 gap-3">
-                <legend className="field-label">{t('admin.gallery.caption')}</legend>
-                {(['kk', 'ru', 'en'] as const).map((lc) => (
-                  <div key={lc}>
-                    <div className="text-[10px] uppercase tracking-wider text-ink-subtle mb-1">{lc}</div>
-                    <textarea
-                      className="min-h-[80px]"
-                      value={form.caption[lc]}
-                      onChange={(e) =>
-                        setForm({ ...form, caption: { ...form.caption, [lc]: e.target.value } })
-                      }
-                    />
-                  </div>
-                ))}
-              </fieldset>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="field-label">{t('admin.gallery.order')}</label>
-                  <input
-                    type="number"
-                    min={1}
-                    value={form.order}
-                    onChange={(e) => setForm({ ...form, order: Number(e.target.value) })}
-                  />
-                </div>
-                <div>
-                  <label className="field-label">{t('common.status')}</label>
-                  <select
-                    value={form.isPublished ? 'on' : 'off'}
-                    onChange={(e) => setForm({ ...form, isPublished: e.target.value === 'on' })}
-                  >
-                    <option value="on">{t('common.published')}</option>
-                    <option value="off">{t('common.unpublished')}</option>
-                  </select>
-                </div>
+          <fieldset className="grid sm:grid-cols-3 gap-3">
+            <legend className="field-label">{t('admin.gallery.caption')}</legend>
+            {(['kk', 'ru', 'en'] as const).map((lc) => (
+              <div key={lc}>
+                <div className="text-[10px] uppercase tracking-wider text-ink-subtle mb-1">{lc}</div>
+                <textarea
+                  className="min-h-[80px]"
+                  value={form.caption[lc]}
+                  onChange={(e) =>
+                    setForm({ ...form, caption: { ...form.caption, [lc]: e.target.value } })
+                  }
+                />
               </div>
-            </div>
+            ))}
+          </fieldset>
 
-            <div className="mt-6 flex justify-end gap-2">
-              <button type="button" className="btn-secondary" onClick={closeForm}>
-                {t('common.cancel')}
-              </button>
-              <button type="submit" className="btn-primary">
-                {t('common.save')}
-              </button>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="field-label">{t('admin.gallery.order')}</label>
+              <input
+                type="number"
+                min={1}
+                value={form.order}
+                onChange={(e) => setForm({ ...form, order: Number(e.target.value) })}
+              />
             </div>
-          </form>
-        </div>
-      )}
+            <div>
+              <label className="field-label">{t('common.status')}</label>
+              <select
+                value={form.isPublished ? 'on' : 'off'}
+                onChange={(e) => setForm({ ...form, isPublished: e.target.value === 'on' })}
+              >
+                <option value="on">{t('common.published')}</option>
+                <option value="off">{t('common.unpublished')}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </Modal>
 
       <ConfirmDialog
         open={confirmId !== null}

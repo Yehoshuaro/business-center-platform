@@ -48,32 +48,32 @@ export const OfficesPage = () => {
       />
 
       {/* Filters */}
-      <div className="card p-4 md:p-5 mb-8">
-        <div className="grid gap-3 md:grid-cols-5">
+      <div className="card p-4 md:p-5 mb-6 sm:mb-8">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <div>
             <label className="field-label">{t('offices.filter.areaFrom')}</label>
-            <input type="number" min={0} className="input" value={areaFrom} onChange={(e) => setAreaFrom(e.target.value)} />
+            <input type="number" min={0} value={areaFrom} onChange={(e) => setAreaFrom(e.target.value)} />
           </div>
           <div>
             <label className="field-label">{t('offices.filter.areaTo')}</label>
-            <input type="number" min={0} className="input" value={areaTo} onChange={(e) => setAreaTo(e.target.value)} />
+            <input type="number" min={0} value={areaTo} onChange={(e) => setAreaTo(e.target.value)} />
           </div>
           <div>
             <label className="field-label">{t('offices.filter.floor')}</label>
-            <input type="number" min={1} className="input" value={floor} onChange={(e) => setFloor(e.target.value)} />
+            <input type="number" min={1} value={floor} onChange={(e) => setFloor(e.target.value)} />
           </div>
           <div>
             <label className="field-label">{t('offices.filter.status')}</label>
-            <select className="select" value={status} onChange={(e) => setStatus(e.target.value as 'all' | OfficeStatus)}>
+            <select value={status} onChange={(e) => setStatus(e.target.value as 'all' | OfficeStatus)}>
               <option value="all">{t('common.all')}</option>
               <option value="available">{t('status.available')}</option>
               <option value="reserved">{t('status.reserved')}</option>
               <option value="occupied">{t('status.occupied')}</option>
             </select>
           </div>
-          <div>
+          <div className="sm:col-span-2 lg:col-span-1">
             <label className="field-label">{t('offices.filter.type')}</label>
-            <select className="select" value={type} onChange={(e) => setType(e.target.value as 'all' | OfficeType)}>
+            <select value={type} onChange={(e) => setType(e.target.value as 'all' | OfficeType)}>
               <option value="all">{t('common.all')}</option>
               <option value="openSpace">{t('officeType.openSpace')}</option>
               <option value="cabinet">{t('officeType.cabinet')}</option>
@@ -82,7 +82,7 @@ export const OfficesPage = () => {
             </select>
           </div>
         </div>
-        <div className="mt-4 flex items-center justify-between text-sm">
+        <div className="mt-4 flex items-center justify-between text-sm gap-3">
           <span className="text-ink-muted">{filtered.length} / {offices.length}</span>
           <button type="button" onClick={reset} className="text-ink-muted hover:text-ink underline underline-offset-4">
             {t('common.reset')}
@@ -93,12 +93,12 @@ export const OfficesPage = () => {
       {filtered.length === 0 ? (
         <EmptyState description={t('offices.empty')} />
       ) : (
-        <div className="grid gap-px bg-line border border-line md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px bg-line border border-line sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((office) => (
             <Link
               key={office.id}
               to={`/offices/${office.id}`}
-              className="bg-surface p-6 hover:bg-surface-2 transition-colors group"
+              className="bg-surface p-5 sm:p-6 hover:bg-surface-2 transition-colors group flex flex-col"
             >
               <div className="flex items-start justify-between gap-2 mb-4">
                 <span className="text-xs uppercase tracking-wider text-ink-muted">
@@ -106,19 +106,19 @@ export const OfficesPage = () => {
                 </span>
                 <OfficeStatusBadge status={office.status} />
               </div>
-              <div className="font-display text-2xl tracking-tight mb-2">{office.title}</div>
+              <div className="font-display text-xl sm:text-2xl tracking-tight mb-2 break-words">{office.title}</div>
               <div className="text-sm text-ink-muted mb-4">
                 {formatNumber(office.area)} м² · {t(`officeType.${office.type}`)}
               </div>
-              <p className="text-sm text-ink-muted line-clamp-2 leading-relaxed mb-4">
+              <p className="text-sm text-ink-muted line-clamp-2 leading-relaxed mb-4 flex-1">
                 {office.description}
               </p>
               <div className="hairline mb-4" />
-              <div className="flex items-end justify-between">
-                <span className="text-sm font-medium">
+              <div className="flex items-end justify-between gap-2">
+                <span className="text-sm font-medium break-words">
                   {office.price !== null ? formatPrice(office.price, locale) : t('common.priceOnRequest')}
                 </span>
-                <ArrowUpRight size={16} className="text-ink-muted group-hover:text-accent transition-colors" />
+                <ArrowUpRight size={16} className="text-ink-muted group-hover:text-accent transition-colors shrink-0" />
               </div>
             </Link>
           ))}

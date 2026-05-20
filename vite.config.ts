@@ -4,7 +4,7 @@ import path from 'path';
 
 // Use './' for static-host friendly relative paths; works on GitHub Pages subpaths too.
 export default defineConfig({
-  base: './',
+  base: '/business-center-platform/',
   plugins: [react()],
   resolve: {
     alias: {

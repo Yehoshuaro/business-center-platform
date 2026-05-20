@@ -30,33 +30,32 @@ export const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-surface flex flex-col">
-      <header className="container-page h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
-          <span className="inline-flex items-center justify-center w-8 h-8 bg-accent text-accent-ink font-display text-base font-semibold">
+      <header className="container-page h-16 flex items-center justify-between gap-3">
+        <Link to="/" className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <span className="inline-flex items-center justify-center w-8 h-8 bg-accent text-accent-ink font-display text-base font-semibold shrink-0">
             B
           </span>
-          <span className="text-sm font-medium tracking-tight">{settings.businessCenterName}</span>
+          <span className="text-sm font-medium tracking-tight truncate">{settings.businessCenterName}</span>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <ThemeSwitcher />
           <LanguageSwitcher />
         </div>
       </header>
 
-      <div className="flex-1 flex items-center justify-center px-5 py-16">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16">
         <div className="w-full max-w-md">
           <div className="eyebrow mb-3">{t('nav.admin')}</div>
-          <h1 className="font-display text-3xl tracking-tight mb-2">{t('login.title')}</h1>
-          <p className="text-sm text-ink-muted mb-8">{t('login.subtitle')}</p>
+          <h1 className="font-display text-2xl sm:text-3xl tracking-tight mb-2">{t('login.title')}</h1>
+          <p className="text-sm text-ink-muted mb-6 sm:mb-8">{t('login.subtitle')}</p>
 
-          <form onSubmit={handleSubmit} className="card p-6 md:p-8">
+          <form onSubmit={handleSubmit} className="card p-5 sm:p-6 md:p-8">
             <div className="space-y-4">
               <div>
                 <label className="field-label">{t('form.email')}</label>
                 <input
                   type="email"
                   required
-                  className="input"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
@@ -69,7 +68,6 @@ export const LoginPage = () => {
                 <input
                   type="password"
                   required
-                  className="input"
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);

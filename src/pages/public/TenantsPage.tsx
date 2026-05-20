@@ -28,7 +28,7 @@ export const TenantsPage = () => {
         <div className="border border-line">
           {floors.map((floor, fi) => (
             <div key={floor} className={fi > 0 ? 'border-t border-line' : ''}>
-              <div className="bg-surface-2 px-5 md:px-8 py-3 flex items-center justify-between">
+              <div className="bg-surface-2 px-4 sm:px-5 md:px-8 py-3 flex items-center justify-between">
                 <span className="eyebrow">
                   {t('common.floor')} {floor}
                 </span>
@@ -38,19 +38,19 @@ export const TenantsPage = () => {
                 {byFloor[floor].map((tn) => (
                   <div
                     key={tn.id}
-                    className="grid md:grid-cols-12 gap-4 px-5 md:px-8 py-5 items-start hover:bg-surface-2 transition-colors"
+                    className="grid md:grid-cols-12 gap-3 md:gap-4 px-4 sm:px-5 md:px-8 py-4 sm:py-5 items-start hover:bg-surface-2 transition-colors"
                   >
-                    <div className="md:col-span-3">
-                      <div className="font-display text-lg tracking-tight">{tn.companyName}</div>
-                      <div className="text-xs text-ink-muted mt-1">{tn.category}</div>
+                    <div className="md:col-span-3 min-w-0">
+                      <div className="font-display text-base sm:text-lg tracking-tight break-words">{tn.companyName}</div>
+                      <div className="text-xs text-ink-muted mt-1 break-words">{tn.category}</div>
                     </div>
-                    <div className="md:col-span-2 text-sm">
-                      <div className="text-ink-muted text-xs uppercase tracking-wider mb-1">
+                    <div className="md:col-span-2 text-sm flex md:block items-baseline gap-2">
+                      <div className="text-ink-muted text-xs uppercase tracking-wider md:mb-1">
                         {t('common.floor')}
                       </div>
-                      {tn.floor} · {tn.officeNumber}
+                      <span className="break-words">{tn.floor} · {tn.officeNumber}</span>
                     </div>
-                    <div className="md:col-span-5 text-sm text-ink-muted leading-relaxed">
+                    <div className="md:col-span-5 text-sm text-ink-muted leading-relaxed break-words">
                       {tn.description}
                     </div>
                     <div className="md:col-span-2 text-sm">
@@ -59,7 +59,7 @@ export const TenantsPage = () => {
                           href={tn.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 link-underline"
+                          className="inline-flex items-center gap-1.5 link-underline break-all"
                         >
                           {t('tenants.website')} <ExternalLink size={12} />
                         </a>
